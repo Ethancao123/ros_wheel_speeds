@@ -1,7 +1,6 @@
 #include <ros/ros.h>
 
-#include "robot_wheel_speeds/DifferentialDriveEncoders.h"
-#include "robot_wheel_speeds/SystemGpio.h"
+#include "robot_wheel_speeds/KiwiDriveEncoders.h"
 
 int main(int argc, char *argv[])
 {
@@ -12,13 +11,17 @@ int main(int argc, char *argv[])
     int leftPinB = 18;
     int rightPinA = 23;
     int rightPinB = 22;
+    int rearPinA = 24;
+    int rearPinB = 25;
     int ticksPerRevolution = 300;
-    int wheelDiameterMm = 60;
-    int wheelAxisMm = 70;
+    int wheelDiameterMm = 26;
+    int wheelFrontAxisMm = 200;
+    int wheelLengthAxisMm = 200;
+    float wheelFrontAngle = 0.5236;
 
 
     ros::init(argc, argv, "robot_wheel_speeds");
-    SystemGPIO gpio({leftPinA, leftPinB, rightPinA, rightPinB});
+    // SystemGPIO gpio({leftPinA, leftPinB, rightPinA, rightPinB, rearPinA, rearPinB});
 
     ros::NodeHandle nodeHandle;
 
@@ -28,11 +31,10 @@ int main(int argc, char *argv[])
     ros::Rate loop_rate(20);
 
     ROS_INFO("Starting wheel_speeds");
-    DifferentialDriveEncoders encoders(leftPinA, leftPinB, rightPinA, rightPinB,
-                                       ticksPerRevolution, wheelDiameterMm, wheelAxisMm,
+    KiwiDriveEncoders encoders(leftPinA, leftPinB, rightPinA, rightPinB, rearPinA, rearPinB,
+                                       ticksPerRevolution, wheelDiameterMm, wheelFrontAxisMm, wheelLengthAxisMm, wheelFrontAngle,
                                        velocityUpdateInterval);
-
-    encoders.Start();
+    encoders.start();
     ROS_INFO("Encoders started");
     int seq = 1;
     while(ros::ok())
@@ -47,6 +49,6 @@ int main(int argc, char *argv[])
 
         loop_rate.sleep();
     }
-
+    encoders.stop();
     return 0;
 }

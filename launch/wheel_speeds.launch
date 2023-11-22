@@ -2,8 +2,10 @@
 
 <launch>
 <arg name="test_mode" default="False"/>
-  
-  <node pkg="robot_wheel_speeds" type="robot_wheel_speeds" name="wheel_speeds" respawn="true" output="screen">
+  <!-- launch-prefix="gdb -ex run \-\-args -->
+  <node pkg="robot_wheel_speeds" type="robot_wheel_speeds" name="wheel_speeds" respawn="false" output="screen" >
     <param name="test_mode" value="$(arg test_mode)" />
+  </node>
+  <node pkg="pwm_pca9685" type="pca9685_node" name="i2c_pwm">
   </node>
 </launch>

@@ -93,6 +93,7 @@ catkin_package(
 ## Build ##
 ###########
 
+set(ROS_BUILD_TYPE Debug)
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 # include_directories(include)
@@ -101,7 +102,7 @@ include_directories( include ${catkin_INCLUDE_DIRS})
 FILE(GLOB srcFiles "src/*.cpp")
 link_directories(/usr/local/include)
 add_executable(robot_wheel_speeds ${srcFiles})
-target_link_libraries(robot_wheel_speeds ${catkin_LIBRARIES} wiringPi)
+target_link_libraries(robot_wheel_speeds ${catkin_LIBRARIES} gpiod)
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
